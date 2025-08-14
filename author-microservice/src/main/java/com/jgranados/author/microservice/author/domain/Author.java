@@ -21,10 +21,12 @@ public class Author {
     private String about;
     private int numberOfArticles;
     
-    public Author(String name, String email) {
+    public Author(String name, String email, String profession, String about) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
+        this.about = about;
+        this.profession = profession;
         this.numberOfArticles = 0;
     }
     
