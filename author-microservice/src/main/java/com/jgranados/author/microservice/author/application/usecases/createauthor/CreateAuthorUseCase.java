@@ -11,12 +11,16 @@ import com.jgranados.author.microservice.author.application.outputports.notifica
 import com.jgranados.author.microservice.author.application.outputports.persistence.StoringAuthorOutputPort;
 import com.jgranados.author.microservice.author.domain.Author;
 import com.jgranados.author.microservice.common.application.annotations.UseCase;
+import jakarta.validation.Valid;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 /**
  *
  * @author jose
  */
 @UseCase
+@Validated
 public class CreateAuthorUseCase implements CreatingAuthorInputPort {
     
     private final FindingAuthorByEmailOutputPort findingByEmailPort;
@@ -34,7 +38,8 @@ public class CreateAuthorUseCase implements CreatingAuthorInputPort {
     
 
     @Override
-    public Author createAuthor(CreateAuthorDto authorDto) throws EntityAlreadyExistsException {
+    @Transactional
+    public Author createAuthor(@Valid CreateAuthorDto authorDto) throws EntityAlreadyExistsException {
         // Validar que el email no exista
         if (findingByEmailPort.findByEmail(authorDto.getEmail()).isPresent()) {
             throw new EntityAlreadyExistsException("Author with email already registered");

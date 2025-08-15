@@ -13,6 +13,7 @@ import com.jgranados.author.microservice.common.infrastructure.annotations.WebAd
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jose
  */
 @RestController
-@RequestMapping("/api/v1/aauthors")
+@RequestMapping("/api/v1/authors")
 @WebAdapter
 public class AuthorControllerAdapter {
     
@@ -38,10 +39,11 @@ public class AuthorControllerAdapter {
     
     
     @PostMapping
+    @Transactional
     public ResponseEntity<CreatedAuthorResponse> createAuthor(@RequestBody CreateAuthorRequest createAuthorRequest) {
-        CreateAuthorDto objectAdaptedFromREstoToDomain = createAuthorRequest.toDomain();
+        CreateAuthorDto objectAdaptedFromRestoToDomain = createAuthorRequest.toDomain();
         
-        Author author = creatingAuthorInputPort.createAuthor(objectAdaptedFromREstoToDomain);
+        Author author = creatingAuthorInputPort.createAuthor(objectAdaptedFromRestoToDomain);
         
         CreatedAuthorResponse response = CreatedAuthorResponse.fromDomain(author);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

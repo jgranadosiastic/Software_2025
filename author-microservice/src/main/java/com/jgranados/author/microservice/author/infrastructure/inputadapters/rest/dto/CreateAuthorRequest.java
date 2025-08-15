@@ -13,10 +13,10 @@ import lombok.Value;
  */
 @Value
 public class CreateAuthorRequest {
-    private String email;
-    private String name;
-    private String profession;
-    private String about;
+    private final String email;
+    private final String name;
+    private final String profession;
+    private final String about;
     
     public CreateAuthorDto toDomain() {
         return new CreateAuthorDto(email, name, profession, about);

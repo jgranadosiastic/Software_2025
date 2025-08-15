@@ -7,17 +7,19 @@ package com.jgranados.author.microservice.author.infrastructure.inputadapters.re
 import com.jgranados.author.microservice.author.domain.Author;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.Value;
 
 /**
  *
  * @author jose
  */
 @AllArgsConstructor
+@Value
 public class CreatedAuthorResponse {
     
-    private UUID id;
-    private String name;
-    private String email;
+    private final UUID id;
+    private final String name;
+    private final String email;
     
     
     public static CreatedAuthorResponse fromDomain(Author author) {
