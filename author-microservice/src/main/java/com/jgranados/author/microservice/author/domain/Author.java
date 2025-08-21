@@ -4,6 +4,7 @@
  */
 package com.jgranados.author.microservice.author.domain;
 
+import com.jgranados.author.microservice.common.domain.annotations.DomainEntity;
 import java.util.UUID;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import lombok.Getter;
  * @author jose
  */
 @Getter
+@DomainEntity
 public class Author {
     
     private UUID id;
@@ -28,6 +30,15 @@ public class Author {
         this.about = about;
         this.profession = profession;
         this.numberOfArticles = 0;
+    }
+    
+    public Author(UUID id, String name, String email, String profession, String about, int articleCount) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.about = about;
+        this.profession = profession;
+        this.numberOfArticles = articleCount;
     }
     
     public Author(String name, String email, String profession, String about) {

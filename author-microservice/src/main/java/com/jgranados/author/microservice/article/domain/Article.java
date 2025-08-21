@@ -5,6 +5,7 @@
 package com.jgranados.author.microservice.article.domain;
 
 import com.jgranados.author.microservice.author.domain.Author;
+import com.jgranados.author.microservice.common.domain.annotations.DomainEntity;
 import java.time.LocalDate;
 import java.util.UUID;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.Getter;
  * @author jose
  */
 @Getter
+@DomainEntity
 public class Article {
     
     private UUID id;

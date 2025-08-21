@@ -4,7 +4,6 @@
  */
 package com.jgranados.author.microservice.author.infrastructure.outputadapters.persistence;
 
-import com.jgranados.author.microservice.author.application.outputports.persistence.FindingAuthorByEmailOutputPort;
 import com.jgranados.author.microservice.author.application.outputports.persistence.StoringAuthorOutputPort;
 import com.jgranados.author.microservice.author.domain.Author;
 import com.jgranados.author.microservice.author.infrastructure.outputadapters.persistence.entity.AuthorDbEntity;
@@ -15,13 +14,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.jgranados.author.microservice.author.application.outputports.persistence.FindingAuthorByEmailOutputPort;
+import com.jgranados.author.microservice.author.application.outputports.persistence.FindingAuthorByIdOutputPort;
+import java.util.UUID;
 
 /**
  *
  * @author jose
  */
 @PersistenceAdapter
-public class AuthorRepositoryOutputAdapter implements FindingAuthorByEmailOutputPort, StoringAuthorOutputPort {
+public class AuthorRepositoryOutputAdapter implements FindingAuthorByEmailOutputPort,
+        StoringAuthorOutputPort, FindingAuthorByIdOutputPort {
 
     private final AuthorDbEntityJpaRepository authorJpaRepository;
     private final AuthorPersistenceMapper authorPersistenceMapper;
@@ -46,6 +49,13 @@ public class AuthorRepositoryOutputAdapter implements FindingAuthorByEmailOutput
         AuthorDbEntity savedEntity = authorJpaRepository.save(authorPersistenceMapper.toDbEntity(author));
 
         return authorPersistenceMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Author> findById(UUID id) {
+        return authorJpaRepository.findById(id)
+                .map(dbEntity -> authorPersistenceMapper.toDomain(dbEntity));
     }
 
 }

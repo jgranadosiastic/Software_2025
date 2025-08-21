@@ -10,7 +10,7 @@ create table article (
     id uuid primary key,
     title varchar(50) not null,
     description varchar(50),
-    author_email varchar(50) not null references author(id),
+    author_id uuid not null references author(id),
     text varchar(3000) not null,
     publication_date date not null,
     active boolean not null,
