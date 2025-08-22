@@ -4,6 +4,7 @@
  */
 package com.jgranados.author.microservice.author.infrastructure.outputadapters.persistence;
 
+import com.jgranados.author.microservice.author.application.outputports.persistence.FindingAllAuthorsOutputPort;
 import com.jgranados.author.microservice.author.application.outputports.persistence.StoringAuthorOutputPort;
 import com.jgranados.author.microservice.author.domain.Author;
 import com.jgranados.author.microservice.author.infrastructure.outputadapters.persistence.entity.AuthorDbEntity;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.jgranados.author.microservice.author.application.outputports.persistence.FindingAuthorByEmailOutputPort;
 import com.jgranados.author.microservice.author.application.outputports.persistence.FindingAuthorByIdOutputPort;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,7 +26,7 @@ import java.util.UUID;
  */
 @PersistenceAdapter
 public class AuthorRepositoryOutputAdapter implements FindingAuthorByEmailOutputPort,
-        StoringAuthorOutputPort, FindingAuthorByIdOutputPort {
+        StoringAuthorOutputPort, FindingAuthorByIdOutputPort, FindingAllAuthorsOutputPort {
 
     private final AuthorDbEntityJpaRepository authorJpaRepository;
     private final AuthorPersistenceMapper authorPersistenceMapper;
@@ -56,6 +58,14 @@ public class AuthorRepositoryOutputAdapter implements FindingAuthorByEmailOutput
     public Optional<Author> findById(UUID id) {
         return authorJpaRepository.findById(id)
                 .map(dbEntity -> authorPersistenceMapper.toDomain(dbEntity));
+    }
+
+    @Override
+    public List<Author> findAllAuthors() {
+        return authorJpaRepository.findAll()
+                .stream()
+                .map(dbEntity -> authorPersistenceMapper.toDomain(dbEntity))
+                .toList();
     }
 
 }

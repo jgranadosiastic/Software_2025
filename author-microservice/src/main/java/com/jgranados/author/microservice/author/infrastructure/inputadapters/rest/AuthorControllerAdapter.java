@@ -6,12 +6,14 @@ package com.jgranados.author.microservice.author.infrastructure.inputadapters.re
 
 import com.jgranados.author.microservice.author.application.inputports.CreatingAuthorInputPort;
 import com.jgranados.author.microservice.author.application.inputports.FindingAuthorByIdInputPort;
+import com.jgranados.author.microservice.author.application.inputports.ListingAllAuthorsInputPort;
 import com.jgranados.author.microservice.author.application.usecases.createauthor.CreateAuthorDto;
 import com.jgranados.author.microservice.author.domain.Author;
 import com.jgranados.author.microservice.author.infrastructure.inputadapters.rest.dto.AuthorResponse;
 import com.jgranados.author.microservice.author.infrastructure.inputadapters.rest.dto.CreateAuthorRequest;
 import com.jgranados.author.microservice.author.infrastructure.inputadapters.rest.dto.CreatedAuthorResponse;
 import com.jgranados.author.microservice.common.infrastructure.annotations.WebAdapter;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,12 +37,15 @@ public class AuthorControllerAdapter {
     
     private final CreatingAuthorInputPort creatingAuthorInputPort;
     private final FindingAuthorByIdInputPort findingAuthorByIdInputPort;
+    private final ListingAllAuthorsInputPort allAuthorsInputPort;
 
     @Autowired
     public AuthorControllerAdapter(CreatingAuthorInputPort creatingAuthorInputPort,
-            FindingAuthorByIdInputPort findingAuthorByIdInputPort) {
+            FindingAuthorByIdInputPort findingAuthorByIdInputPort,
+            ListingAllAuthorsInputPort allAuthorsInputPort) {
         this.creatingAuthorInputPort = creatingAuthorInputPort;
         this.findingAuthorByIdInputPort = findingAuthorByIdInputPort;
+        this.allAuthorsInputPort = allAuthorsInputPort;
     }
     
     
@@ -60,5 +65,15 @@ public class AuthorControllerAdapter {
         Author author = findingAuthorByIdInputPort.findById(id);
         
         return ResponseEntity.ok(AuthorResponse.fromDomain(author));
+    }   
+    
+    @GetMapping
+    public ResponseEntity<List<AuthorResponse>> getAllAuthors() {
+        List<AuthorResponse> authors = allAuthorsInputPort.listAllAuthors()
+                .stream()
+                .map(AuthorResponse::fromDomain)
+                .toList();
+        
+        return ResponseEntity.ok(authors);
     }
 }
