@@ -15,14 +15,14 @@ import lombok.Getter;
 @Getter
 @DomainEntity
 public class Author {
-    
+
     private UUID id;
     private String email;
     private String name;
     private String profession;
     private String about;
     private int numberOfArticles;
-    
+
     public Author(UUID id, String name, String email, String profession, String about) {
         this.id = id;
         this.name = name;
@@ -31,7 +31,7 @@ public class Author {
         this.profession = profession;
         this.numberOfArticles = 0;
     }
-    
+
     public Author(UUID id, String name, String email, String profession, String about, int articleCount) {
         this.id = id;
         this.name = name;
@@ -40,7 +40,7 @@ public class Author {
         this.profession = profession;
         this.numberOfArticles = articleCount;
     }
-    
+
     public Author(String name, String email, String profession, String about) {
         this.id = UUID.randomUUID();
         this.name = name;
@@ -49,7 +49,7 @@ public class Author {
         this.profession = profession;
         this.numberOfArticles = 0;
     }
-    
+
     // Comportamiento de dominio
     public void incrementArticleCount() {
         this.numberOfArticles++;

@@ -5,9 +5,11 @@
 package com.jgranados.author.microservice.common.infrastructure.inputadapters.rest.handlers;
 
 import com.jgranados.author.microservice.common.application.exceptions.EntityAlreadyExistsException;
+import com.jgranados.author.microservice.common.application.exceptions.EntityNotFoundException;
 import com.jgranados.author.microservice.common.infrastructure.inputadapters.rest.dto.RestApiError;
 import com.jgranados.author.microservice.common.infrastructure.inputadapters.rest.dto.ValidationDataError;
 import jakarta.validation.ConstraintViolationException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -38,11 +40,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ValidationDataError(errors));
     }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ValidationDataError> handleIllegalArgumentException(IllegalArgumentException ex) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ValidationDataError(errors));
+    }
 
-    /*@ExceptionHandler(AuthorNotFoundException.class)
-    public ResponseEntity<RestApiError> handleAuthorNotFound(AuthorNotFoundException ex) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<RestApiError> handleAuthorNotFound(EntityNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
-    }*/
+                .body(new RestApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
+    }
 }

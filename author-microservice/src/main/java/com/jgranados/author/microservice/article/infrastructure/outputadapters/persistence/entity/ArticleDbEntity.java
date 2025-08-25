@@ -29,6 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleDbEntity {
+
     @Id
     private UUID id;
     @ManyToOne

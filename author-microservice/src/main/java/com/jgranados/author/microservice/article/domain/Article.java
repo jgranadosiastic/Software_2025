@@ -17,7 +17,7 @@ import lombok.Getter;
 @Getter
 @DomainEntity
 public class Article {
-    
+
     private UUID id;
     private Author author;
     private String title;
@@ -25,7 +25,7 @@ public class Article {
     private String text;
     private TextArticle textVO;
     private LocalDate publicationDate;
-    
+
     private boolean active;
     private boolean visible;
 
@@ -34,18 +34,28 @@ public class Article {
         this.author = author;
         this.title = title;
         this.description = description;
-        this.textVO = new TextArticle(text);
+        this.textVO = new TextArticle(text); // value objects are better than just rely on bean validations
         this.active = true;
         this.visible = true;
+        publicationDate = LocalDate.now();
     }
-    
-    
-    
+
+    public Article(UUID id, Author author, String title, String description, String text, LocalDate publicationDate, boolean active, boolean visible) {
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.text = text;
+        this.publicationDate = publicationDate;
+        this.active = active;
+        this.visible = visible;
+    }
+
     public boolean isValidContent() {
         if (text == null) {
             return false;
         }
-        
+
         return text.length() >= 200;
     }
 }
