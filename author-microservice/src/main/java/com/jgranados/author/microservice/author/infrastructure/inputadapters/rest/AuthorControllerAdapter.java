@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -75,5 +76,13 @@ public class AuthorControllerAdapter {
                 .toList();
         
         return ResponseEntity.ok(authors);
+    }
+
+    // This is not needed because the head is mapped to the get, but I let this as example
+    @RequestMapping(method = RequestMethod.HEAD, path = "/{id}")
+    public ResponseEntity<Void> checkAuthorExists(@PathVariable UUID id) {
+        findingAuthorByIdInputPort.findById(id);
+
+        return ResponseEntity.ok().build();
     }
 }
