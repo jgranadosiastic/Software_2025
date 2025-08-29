@@ -5,6 +5,7 @@
 package com.jgranados.subscriber.microservice.subscriber.domain;
 
 import com.jgranados.subscriber.microservice.common.domain.annotations.DomainEntity;
+import java.util.UUID;
 import lombok.Getter;
 
 /**
@@ -24,5 +25,10 @@ public class Subscriber {
         this.name = new SubscriberName(name);
     }
     
+    public Subscriber(UUID subscriberId, String email, String name) {
+        this.id = SubscriberId.fromUUID(subscriberId);
+        this.email = new SubscriberEmail(email);
+        this.name = new SubscriberName(name);
+    }
     
 }

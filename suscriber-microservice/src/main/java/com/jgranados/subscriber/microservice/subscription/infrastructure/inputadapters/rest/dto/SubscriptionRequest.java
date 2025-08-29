@@ -14,8 +14,8 @@ import lombok.Value;
  */
 @Value
 public class SubscriptionRequest {
-    private static UUID authorId;
-    private static boolean withNotifications;
+    private final UUID authorId;
+    private final boolean withNotifications;
     
     public SubscribeToAuthorDto toDomain(UUID subscriberId) {
         return new SubscribeToAuthorDto(subscriberId, authorId, withNotifications);

@@ -4,15 +4,14 @@
  */
 package com.jgranados.subscriber.microservice.subscription.application.outputports.persistence;
 
-import com.jgranados.subscriber.microservice.subscriber.domain.SubscriberId;
 import com.jgranados.subscriber.microservice.subscription.domain.Subscription;
+import com.jgranados.subscriber.microservice.subscription.domain.SubscriptionId;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  *
  * @author jose
  */
 public interface FindingSubscriptionByIdOutputPort {
-    Optional<Subscription> findSubscriptionById(SubscriberId subscriberId, UUID authorID);
+    Optional<Subscription> findSubscriptionById(SubscriptionId subscriptionId);
 }

@@ -14,6 +14,7 @@ import com.jgranados.subscriber.microservice.subscription.application.outputport
 import com.jgranados.subscriber.microservice.subscription.application.outputports.persistence.FindingSubscriptionByIdOutputPort;
 import com.jgranados.subscriber.microservice.subscription.application.outputports.persistence.StoringSubscriptionOutputPort;
 import com.jgranados.subscriber.microservice.subscription.domain.Subscription;
+import com.jgranados.subscriber.microservice.subscription.domain.SubscriptionId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -45,7 +46,7 @@ public class SubscribeToAuthorUseCase implements  SubscribingToAuthorInputPort {
     @Override
     public void subscribeToAuthor(SubscribeToAuthorDto subscribeToAuthorDto) throws EntityNotFoundException, EntityAlreadyExistsException {
         // verify the author exists
-        if (existsAuthorOutputPort.existsAuthor(subscribeToAuthorDto.getAuthorId())) {
+        if (!existsAuthorOutputPort.existsAuthor(subscribeToAuthorDto.getAuthorId())) {
             throw new EntityNotFoundException("Author does not exists.");
         }
         
@@ -55,7 +56,8 @@ public class SubscribeToAuthorUseCase implements  SubscribingToAuthorInputPort {
                 .orElseThrow(() -> new EntityNotFoundException(Subscriber.class));
         
         // verify subscription does not exists
-        if (findingSubscriptionByIdOutputPort.findSubscriptionById(subscriber.getId(), subscribeToAuthorDto.getAuthorId()).isPresent()) {
+        SubscriptionId subscriptionId = new SubscriptionId(subscriber.getId(), subscribeToAuthorDto.getAuthorId());
+        if (findingSubscriptionByIdOutputPort.findSubscriptionById(subscriptionId).isPresent()) {
             throw new EntityAlreadyExistsException("Subscription already exists.");
         } 
         
